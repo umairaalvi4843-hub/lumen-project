@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+env/
+*.so
+*.egg-info/
+dist/
+build/
+
+# Output files
+python-workers/*.json
+python-workers/*.png
+python-workers/diarizations/
+python-workers/transcriptions/
+python-workers/model_cache/
+
+# Datasets
+datasets/
+
+# Environment
+.env
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
