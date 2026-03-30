@@ -1,0 +1,9 @@
+com/lumen/repository/AnalysisJobRepository.class
+com/lumen/service/AnalysisService.class
+com/lumen/entity/AnalysisJob.class
+com/lumen/dto/AnalysisResponse.class
+com/lumen/controller/AnalysisController.class
+com/lumen/dto/AnalysisResponse$Builder.class
+com/lumen/dto/AnalysisRequest.class
+com/lumen/LumenApplication.class
+com/lumen/controller/TestController.class
