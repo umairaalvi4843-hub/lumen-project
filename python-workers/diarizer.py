@@ -1,3 +1,4 @@
+import sys
 #!/usr/bin/env python
 """
 DIARIZER.PY - LAYER 2: Speaker Identification for Lumen Project
@@ -112,7 +113,7 @@ def main():
     if not token:
         return
     
-    audio_path = "../datasets/test_audio/speech_sample.wav"
+    audio_path = sys.argv[1] if len(sys.argv) > 1 else "../datasets/test_audio/real_speech.wav"
     if not os.path.exists(audio_path):
         print(f"❌ Audio file not found: {audio_path}")
         print("Please download a test audio file first.")

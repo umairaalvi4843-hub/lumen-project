@@ -1,7 +1,6 @@
 package com.lumen.controller;
 
 import com.lumen.service.AnalysisService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ public class AnalysisController {
 
     private final String WORKER_DIR = "/Users/apple/Documents/lumen-project/python-workers/";
     private final String UPLOAD_DIR = "/Users/apple/Documents/lumen-project/datasets/test_audio/";
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @PostMapping("/upload")
     public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file) {
@@ -61,26 +59,28 @@ public class AnalysisController {
             String resultFileName = "aligned_" + jobId + ".json";
             Path path = Paths.get(WORKER_DIR).resolve(resultFileName);
             
-            System.out.println("🔍 Looking for: " + path.toAbsolutePath());
+            System.out.println("Looking for: " + path.toAbsolutePath());
 
             if (!Files.exists(path)) {
-                return ResponseEntity.status(404).body("{\"error\": \"Results not ready yet. File: " + resultFileName + "\"}");
+                // Try alternative location
+                path = Paths.get(WORKER_DIR + resultFileName);
+                if (!Files.exists(path)) {
+                    return ResponseEntity.status(404).body("{\"error\": \"Results not ready yet\"}");
+                }
             }
 
             String content = Files.readString(path);
             
             // Parse and re-serialize to ensure valid JSON
+            ObjectMapper mapper = new ObjectMapper();
             Object json = mapper.readValue(content, Object.class);
             String prettyJson = mapper.writeValueAsString(json);
-            
-            System.out.println("✅ Returning results for job: " + jobId);
             
             return ResponseEntity.ok()
                     .header("Content-Type", "application/json")
                     .body(prettyJson);
                     
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(500).body("{\"error\": \"" + e.getMessage() + "\"}");
         }
     }
